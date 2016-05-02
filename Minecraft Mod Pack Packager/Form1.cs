@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.IO.Compression;
 using System.IO;
 using Ionic.Zip;
+using System.Xml;
 
 namespace Minecraft_Mod_Pack_Packager
 {
@@ -12,6 +13,8 @@ namespace Minecraft_Mod_Pack_Packager
         public String serverfilesPath = "";
         public String name = "";
         public String version = "";
+        public String templatesFolderPath = "";
+
         public Form1()
         {
             InitializeComponent();
@@ -24,10 +27,15 @@ namespace Minecraft_Mod_Pack_Packager
                 dlg.Description = "Select Mod Pack Folder";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    modpackPath = dlg.SelectedPath;
-                    txtModPackPath.Text = modpackPath;
+                    txtModPackPath.Text = dlg.SelectedPath;
                 }
             }
+            loadModPackFiles();
+        }
+        private void loadModPackFiles()
+        {
+            modpackPath = txtModPackPath.Text;
+            serverfilesPath = txtModPackExtraFiles.Text;
             checkedListBox1.Items.Clear();
             checkedListBox2.Items.Clear();
             checkedListBox3.Items.Clear();
@@ -70,8 +78,7 @@ namespace Minecraft_Mod_Pack_Packager
                 dlg.Description = "Select Server Files/Extra Files Folder";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    serverfilesPath = dlg.SelectedPath;
-                    txModPackExtraFiles.Text = serverfilesPath;
+                    txtModPackExtraFiles.Text = dlg.SelectedPath;
                 }
             }
         }
@@ -104,17 +111,17 @@ namespace Minecraft_Mod_Pack_Packager
 
         private void btnCreateFiles_Click(object sender, EventArgs e)
         {
-            if (checkBoxClient.Checked == false && checkBoxServer.Checked == false)
-            {
-                MessageBox.Show("You need to select the type of files you want to package", "Error!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                return;
-            }
-            else if (txtModPackPath.Text == "" || txtModPackName.Text == "" || txtModPackVersion.Text == "")
+            if (txtModPackPath.Text == "" || txtModPackName.Text == "" || txtModPackVersion.Text == "")
             {
                 MessageBox.Show("You need to fill out all the information", "Error!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
                 return;
             }
-            else if (txModPackExtraFiles.Text == "")
+            else if (checkBoxClient.Checked == false && checkBoxServer.Checked == false)
+            {
+                MessageBox.Show("You need to select the type of files you want to package", "Error!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                return;
+            }
+            else if (txtModPackExtraFiles.Text == "")
             {
                 String output = MessageBox.Show("Are you sure you dont want to include any extra server files such as jar's", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning).ToString();
                 if (output.ToLower().Equals("No"))
@@ -167,7 +174,7 @@ namespace Minecraft_Mod_Pack_Packager
                             }
                         }
                     }
-                    zip.Save(@Application.StartupPath + "/" + name + " v" + version + ".zip");
+                    zip.Save(Application.StartupPath + @"\" + name + " v" + version + ".zip");
                     zip.Dispose();
                 }
             }
@@ -214,9 +221,9 @@ namespace Minecraft_Mod_Pack_Packager
                             }
                         }
                     }
-                    if (txModPackExtraFiles.Text != "")
+                    if (txtModPackExtraFiles.Text != "")
                         zip.AddDirectory(@serverfilesPath, @"\" + serverFolderName + @"\");
-                    zip.Save(@Application.StartupPath + "/" + name + " v" + version + " Server Files" + ".zip");
+                    zip.Save(Application.StartupPath + @"\" + name + " v" + version + " Server Files" + ".zip");
                     zip.Dispose();
                 }
             }
@@ -225,7 +232,99 @@ namespace Minecraft_Mod_Pack_Packager
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            templatesFolderPath = Application.StartupPath + @"\templates\";
+            if (!Directory.Exists(templatesFolderPath))
+            {
+                Directory.CreateDirectory(templatesFolderPath);
+            }
 
+            DirectoryInfo d = new DirectoryInfo(templatesFolderPath);
+            foreach (var file in d.GetFiles("*.xml"))
+            {
+                comboTemplates.Items.Add(file.Name.Substring(0, (file.Name.Length - 4)));
+            }
         }
+
+        private void btnLoadTemplate_Click(object sender, EventArgs e)
+        {
+            try {
+               if (comboTemplates.Items.Count > 0 && comboTemplates.Text != "")
+                {
+                    XmlTextReader reader = new XmlTextReader(templatesFolderPath + comboTemplates.Text + ".xml");
+                    while (reader.Read())
+                    {
+                        if (reader.NodeType == XmlNodeType.Element)
+                        {
+                            if (reader.Name == "TemplateInfo")
+                            {
+                                txtModPackName.Text = comboTemplates.Text;
+                                txtModPackVersion.Text = reader.GetAttribute("CurrentVersion");
+                                txtModPackPath.Text = reader.GetAttribute("ModPackPath");
+                                txtModPackExtraFiles.Text = reader.GetAttribute("ExtraFilesPath");
+                                checkBoxClient.Checked = Convert.ToBoolean(reader.GetAttribute("ClientFiles"));
+                                checkBoxServer.Checked = Convert.ToBoolean(reader.GetAttribute("ServerFiles"));
+                            }
+                        }
+                    }
+                    reader.Close();
+                    loadModPackFiles();
+                }
+            }
+            catch (Exception ex)
+            {
+                txtConsole.AppendText("Unable to load " + templatesFolderPath + txtModPackName.Text + ".xml" + ex.Message);
+            }
+        }
+
+        private void btnSaveTemplate_Click(object sender, EventArgs e)
+        {
+            if (txtModPackPath.Text == "" || txtModPackName.Text == "" || txtModPackVersion.Text == "")
+            {
+                MessageBox.Show("You need to fill out all the information", "Error!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                return;
+            }
+            else if (checkBoxClient.Checked == false && checkBoxServer.Checked == false)
+            {
+                MessageBox.Show("You need to select the type of files you want to package", "Error!", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                return;
+            }
+            try {
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                XmlWriter writer = XmlWriter.Create(templatesFolderPath + txtModPackName.Text + ".xml", settings);
+                writer.WriteStartDocument();
+                writer.WriteStartElement("TemplateInfo");
+                writer.WriteAttributeString("CurrentVersion", txtModPackVersion.Text);
+                writer.WriteAttributeString("ModPackPath", txtModPackPath.Text);
+                writer.WriteAttributeString("ExtraFilesPath", txtModPackExtraFiles.Text);
+                writer.WriteAttributeString("ClientFiles", checkBoxClient.Checked.ToString());
+                writer.WriteAttributeString("ServerFiles", checkBoxServer.Checked.ToString());
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+                writer.Flush();
+                writer.Close();
+            }
+            catch(Exception ex)
+            {
+                txtConsole.AppendText("Unable to save " + templatesFolderPath + txtModPackName.Text + ".xml" + ex.Message);
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            checkedListBox1.Items.Clear();
+            checkedListBox2.Items.Clear();
+            checkedListBox3.Items.Clear();
+            checkedListBox4.Items.Clear();
+            txtModPackName.Text = "";
+            txtModPackVersion.Text = "";
+            txtModPackPath.Text = "";
+            txtModPackExtraFiles.Text = "";
+            checkBoxClient.Checked = false;
+            checkBoxServer.Checked = false;
+            txtConsole.Text = "";
+        }
+
     }
 }

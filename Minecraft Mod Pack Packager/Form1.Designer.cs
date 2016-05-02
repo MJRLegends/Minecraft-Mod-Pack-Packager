@@ -41,7 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnModPackExtraFiles = new System.Windows.Forms.Button();
-            this.txModPackExtraFiles = new System.Windows.Forms.TextBox();
+            this.txtModPackExtraFiles = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.progressBar2 = new System.Windows.Forms.ProgressBar();
@@ -57,17 +57,24 @@
             this.checkedListBox3 = new System.Windows.Forms.CheckedListBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.checkedListBox4 = new System.Windows.Forms.CheckedListBox();
+            this.btnLoadTemplate = new System.Windows.Forms.Button();
+            this.comboTemplates = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSaveTemplate = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtModPackPath
             // 
-            this.txtModPackPath.Location = new System.Drawing.Point(96, 59);
+            this.txtModPackPath.Location = new System.Drawing.Point(90, 63);
             this.txtModPackPath.Name = "txtModPackPath";
             this.txtModPackPath.ReadOnly = true;
             this.txtModPackPath.Size = new System.Drawing.Size(337, 20);
@@ -75,7 +82,7 @@
             // 
             // btnModPackPath
             // 
-            this.btnModPackPath.Location = new System.Drawing.Point(439, 60);
+            this.btnModPackPath.Location = new System.Drawing.Point(433, 61);
             this.btnModPackPath.Name = "btnModPackPath";
             this.btnModPackPath.Size = new System.Drawing.Size(27, 19);
             this.btnModPackPath.TabIndex = 1;
@@ -86,7 +93,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 63);
+            this.label1.Location = new System.Drawing.Point(3, 67);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 2;
@@ -106,7 +113,7 @@
             // txtConsole
             // 
             this.txtConsole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtConsole.Location = new System.Drawing.Point(12, 157);
+            this.txtConsole.Location = new System.Drawing.Point(6, 144);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ReadOnly = true;
@@ -118,7 +125,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(676, 28);
+            this.tabControl1.Location = new System.Drawing.Point(670, 23);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(271, 392);
@@ -140,7 +147,7 @@
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Location = new System.Drawing.Point(0, 0);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(260, 364);
+            this.checkedListBox1.Size = new System.Drawing.Size(263, 364);
             this.checkedListBox1.TabIndex = 0;
             // 
             // tabPage2
@@ -166,7 +173,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(750, 4);
+            this.label2.Location = new System.Drawing.Point(744, 2);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(128, 18);
             this.label2.TabIndex = 8;
@@ -175,7 +182,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 96);
+            this.label3.Location = new System.Drawing.Point(3, 94);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(115, 13);
             this.label3.TabIndex = 11;
@@ -183,7 +190,7 @@
             // 
             // btnModPackExtraFiles
             // 
-            this.btnModPackExtraFiles.Location = new System.Drawing.Point(439, 93);
+            this.btnModPackExtraFiles.Location = new System.Drawing.Point(433, 88);
             this.btnModPackExtraFiles.Name = "btnModPackExtraFiles";
             this.btnModPackExtraFiles.Size = new System.Drawing.Size(27, 19);
             this.btnModPackExtraFiles.TabIndex = 10;
@@ -191,32 +198,32 @@
             this.btnModPackExtraFiles.UseVisualStyleBackColor = true;
             this.btnModPackExtraFiles.Click += new System.EventHandler(this.btnModPackExtraFiles_Click);
             // 
-            // txModPackExtraFiles
+            // txtModPackExtraFiles
             // 
-            this.txModPackExtraFiles.Location = new System.Drawing.Point(130, 92);
-            this.txModPackExtraFiles.Name = "txModPackExtraFiles";
-            this.txModPackExtraFiles.ReadOnly = true;
-            this.txModPackExtraFiles.Size = new System.Drawing.Size(303, 20);
-            this.txModPackExtraFiles.TabIndex = 9;
+            this.txtModPackExtraFiles.Location = new System.Drawing.Point(124, 90);
+            this.txtModPackExtraFiles.Name = "txtModPackExtraFiles";
+            this.txtModPackExtraFiles.ReadOnly = true;
+            this.txtModPackExtraFiles.Size = new System.Drawing.Size(303, 20);
+            this.txtModPackExtraFiles.TabIndex = 9;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 431);
+            this.progressBar1.Location = new System.Drawing.Point(12, 422);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(935, 23);
+            this.progressBar1.Size = new System.Drawing.Size(935, 15);
             this.progressBar1.TabIndex = 12;
             // 
             // progressBar2
             // 
-            this.progressBar2.Location = new System.Drawing.Point(12, 460);
+            this.progressBar2.Location = new System.Drawing.Point(12, 443);
             this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(935, 21);
+            this.progressBar2.Size = new System.Drawing.Size(935, 15);
             this.progressBar2.TabIndex = 13;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 9);
+            this.label4.Location = new System.Drawing.Point(3, 13);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(87, 13);
             this.label4.TabIndex = 14;
@@ -225,7 +232,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 36);
+            this.label5.Location = new System.Drawing.Point(3, 40);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(94, 13);
             this.label5.TabIndex = 15;
@@ -233,14 +240,14 @@
             // 
             // txtModPackName
             // 
-            this.txtModPackName.Location = new System.Drawing.Point(96, 6);
+            this.txtModPackName.Location = new System.Drawing.Point(90, 10);
             this.txtModPackName.Name = "txtModPackName";
             this.txtModPackName.Size = new System.Drawing.Size(337, 20);
             this.txtModPackName.TabIndex = 16;
             // 
             // txtModPackVersion
             // 
-            this.txtModPackVersion.Location = new System.Drawing.Point(105, 33);
+            this.txtModPackVersion.Location = new System.Drawing.Point(99, 37);
             this.txtModPackVersion.Name = "txtModPackVersion";
             this.txtModPackVersion.Size = new System.Drawing.Size(328, 20);
             this.txtModPackVersion.TabIndex = 17;
@@ -248,7 +255,7 @@
             // checkBoxClient
             // 
             this.checkBoxClient.AutoSize = true;
-            this.checkBoxClient.Location = new System.Drawing.Point(12, 124);
+            this.checkBoxClient.Location = new System.Drawing.Point(6, 117);
             this.checkBoxClient.Name = "checkBoxClient";
             this.checkBoxClient.Size = new System.Drawing.Size(76, 17);
             this.checkBoxClient.TabIndex = 18;
@@ -258,7 +265,7 @@
             // checkBoxServer
             // 
             this.checkBoxServer.AutoSize = true;
-            this.checkBoxServer.Location = new System.Drawing.Point(105, 124);
+            this.checkBoxServer.Location = new System.Drawing.Point(99, 117);
             this.checkBoxServer.Name = "checkBoxServer";
             this.checkBoxServer.Size = new System.Drawing.Size(81, 17);
             this.checkBoxServer.TabIndex = 19;
@@ -269,17 +276,17 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(474, 6);
+            this.label6.Location = new System.Drawing.Point(468, 4);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(175, 18);
+            this.label6.Size = new System.Drawing.Size(143, 18);
             this.label6.TabIndex = 20;
-            this.label6.Text = "Folder/Files to include";
+            this.label6.Text = "Folders to include";
             // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Location = new System.Drawing.Point(472, 28);
+            this.tabControl2.Location = new System.Drawing.Point(466, 23);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(198, 392);
@@ -323,38 +330,100 @@
             this.checkedListBox4.Size = new System.Drawing.Size(190, 364);
             this.checkedListBox4.TabIndex = 3;
             // 
+            // btnLoadTemplate
+            // 
+            this.btnLoadTemplate.Location = new System.Drawing.Point(280, 1);
+            this.btnLoadTemplate.Name = "btnLoadTemplate";
+            this.btnLoadTemplate.Size = new System.Drawing.Size(80, 23);
+            this.btnLoadTemplate.TabIndex = 22;
+            this.btnLoadTemplate.Text = "Load";
+            this.btnLoadTemplate.UseVisualStyleBackColor = true;
+            this.btnLoadTemplate.Click += new System.EventHandler(this.btnLoadTemplate_Click);
+            // 
+            // comboTemplates
+            // 
+            this.comboTemplates.FormattingEnabled = true;
+            this.comboTemplates.Location = new System.Drawing.Point(93, 1);
+            this.comboTemplates.Name = "comboTemplates";
+            this.comboTemplates.Size = new System.Drawing.Size(181, 21);
+            this.comboTemplates.TabIndex = 23;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(9, 4);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 13);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "Load Template";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.txtModPackPath);
+            this.panel1.Controls.Add(this.btnModPackPath);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.tabControl2);
+            this.panel1.Controls.Add(this.txtConsole);
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.tabControl1);
+            this.panel1.Controls.Add(this.checkBoxServer);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.checkBoxClient);
+            this.panel1.Controls.Add(this.txtModPackExtraFiles);
+            this.panel1.Controls.Add(this.txtModPackVersion);
+            this.panel1.Controls.Add(this.btnModPackExtraFiles);
+            this.panel1.Controls.Add(this.txtModPackName);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.progressBar1);
+            this.panel1.Controls.Add(this.progressBar2);
+            this.panel1.Location = new System.Drawing.Point(0, 28);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(959, 461);
+            this.panel1.TabIndex = 25;
+            // 
+            // btnSaveTemplate
+            // 
+            this.btnSaveTemplate.Location = new System.Drawing.Point(366, 1);
+            this.btnSaveTemplate.Name = "btnSaveTemplate";
+            this.btnSaveTemplate.Size = new System.Drawing.Size(80, 23);
+            this.btnSaveTemplate.TabIndex = 26;
+            this.btnSaveTemplate.Text = "Save";
+            this.btnSaveTemplate.UseVisualStyleBackColor = true;
+            this.btnSaveTemplate.Click += new System.EventHandler(this.btnSaveTemplate_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(452, 1);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(80, 23);
+            this.btnClear.TabIndex = 27;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(959, 531);
-            this.Controls.Add(this.tabControl2);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.checkBoxServer);
-            this.Controls.Add(this.checkBoxClient);
-            this.Controls.Add(this.txtModPackVersion);
-            this.Controls.Add(this.txtModPackName);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.progressBar2);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.btnModPackExtraFiles);
-            this.Controls.Add(this.txModPackExtraFiles);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.txtConsole);
+            this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.btnSaveTemplate);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.comboTemplates);
+            this.Controls.Add(this.btnLoadTemplate);
             this.Controls.Add(this.btnCreateFiles);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnModPackPath);
-            this.Controls.Add(this.txtModPackPath);
             this.DoubleBuffered = true;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(975, 570);
             this.MinimumSize = new System.Drawing.Size(975, 570);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Minecraft Mod Pack Packager - By MJRLegends";
+            this.Text = "Minecraft Mod Pack Packager v1.0.0 - By MJRLegends";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -362,6 +431,8 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -380,7 +451,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnModPackExtraFiles;
-        private System.Windows.Forms.TextBox txModPackExtraFiles;
+        private System.Windows.Forms.TextBox txtModPackExtraFiles;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ProgressBar progressBar2;
@@ -398,6 +469,12 @@
         private System.Windows.Forms.CheckedListBox checkedListBox3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.CheckedListBox checkedListBox4;
+        private System.Windows.Forms.Button btnLoadTemplate;
+        private System.Windows.Forms.ComboBox comboTemplates;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnSaveTemplate;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 
