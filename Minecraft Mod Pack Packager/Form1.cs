@@ -174,7 +174,19 @@ namespace Minecraft_Mod_Pack_Packager
                             }
                         }
                     }
-                    zip.Save(Application.StartupPath + @"\" + name + " v" + version + ".zip");
+                    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                    saveFileDialog1.InitialDirectory = @"C:\";
+                    saveFileDialog1.Title = "Save Client Files";
+                    saveFileDialog1.CheckPathExists = true;
+                    saveFileDialog1.DefaultExt = ".zip";
+                    saveFileDialog1.Filter = "ZIP file (*.zip)|*.zip";
+                    saveFileDialog1.FilterIndex = 1;
+                    saveFileDialog1.RestoreDirectory = true;
+                    saveFileDialog1.FileName = name + " v" + version + ".zip";
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        zip.Save(saveFileDialog1.FileName);
+                    }
                     zip.Dispose();
                 }
             }
@@ -223,7 +235,19 @@ namespace Minecraft_Mod_Pack_Packager
                     }
                     if (txtModPackExtraFiles.Text != "")
                         zip.AddDirectory(@serverfilesPath, @"\" + serverFolderName + @"\");
-                    zip.Save(Application.StartupPath + @"\" + name + " v" + version + " Server Files" + ".zip");
+                    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                    saveFileDialog1.InitialDirectory = @"C:\";
+                    saveFileDialog1.Title = "Save Server Files";
+                    saveFileDialog1.CheckPathExists = true;
+                    saveFileDialog1.DefaultExt = ".zip";
+                    saveFileDialog1.Filter = "ZIP file (*.zip)|*.zip";
+                    saveFileDialog1.FilterIndex = 1;
+                    saveFileDialog1.RestoreDirectory = true;
+                    saveFileDialog1.FileName = name + " v" + version + " Server Files" + ".zip";
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        zip.Save(saveFileDialog1.FileName);
+                    }
                     zip.Dispose();
                 }
             }
@@ -263,11 +287,73 @@ namespace Minecraft_Mod_Pack_Packager
                                 txtModPackExtraFiles.Text = reader.GetAttribute("ExtraFilesPath");
                                 checkBoxClient.Checked = Convert.ToBoolean(reader.GetAttribute("ClientFiles"));
                                 checkBoxServer.Checked = Convert.ToBoolean(reader.GetAttribute("ServerFiles"));
+                                loadModPackFiles();
+                            }
+                            else if (reader.Name == "UnTickedClientMods")
+                            {
+                                int number = 0;
+                                for (int i = 0; i < Convert.ToInt32(reader.GetAttribute("NumOfClientMods")); i++)
+                                {
+                                    for (int j = 0; j < checkedListBox1.Items.Count; j++)
+                                    {
+                                        if (checkedListBox1.CheckedItems.Contains(reader.GetAttribute("ClientMod" + number)) && checkedListBox1.Items[j].ToString().Equals(reader.GetAttribute("ClientMod" + number)))
+                                        {
+                                            checkedListBox1.SetItemCheckState(j, CheckState.Unchecked);
+                                            number++;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (reader.Name == "UnTickedServerMods")
+                            {
+                                int number = 0;
+                                int amount = Convert.ToInt32(reader.GetAttribute("NumOfServerMods"));
+                                for (int i = 0; i < amount; i++)
+                                {
+                                    for (int j = 0; j < checkedListBox2.Items.Count; j++)
+                                    {
+                                        if (checkedListBox2.CheckedItems.Contains(reader.GetAttribute("ServerMod" + number)) && checkedListBox2.Items[j].ToString().Equals(reader.GetAttribute("ServerMod" + number)))
+                                        {
+                                            checkedListBox2.SetItemCheckState(j, CheckState.Unchecked);
+                                            number++;
+                                        }
+                                            
+                                    }
+                                }
+                            }
+                            else if (reader.Name == "TickedClientFolders")
+                            {
+                                int number = 0;
+                                for (int i = 0; i < Convert.ToInt32(reader.GetAttribute("NumOfClientFolders")); i++)
+                                {
+                                    for (int j = 0; j < checkedListBox3.Items.Count; j++)
+                                    {
+                                        if (!checkedListBox3.CheckedItems.Contains(reader.GetAttribute("ClientFolder" + number)) && checkedListBox3.Items[j].ToString().Equals(reader.GetAttribute("ClientFolder" + number)))
+                                        {
+                                            checkedListBox3.SetItemCheckState(j, CheckState.Checked);
+                                            number++;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (reader.Name == "TickedServerFolders")
+                            {
+                                int number = 0;
+                                for (int i = 0; i < Convert.ToInt32(reader.GetAttribute("NumOfServerFolders")); i++)
+                                {
+                                    for (int j = 0; j < checkedListBox4.Items.Count; j++)
+                                    {
+                                        if (!checkedListBox4.CheckedItems.Contains(reader.GetAttribute("ServerFolder" + number)) && checkedListBox4.Items[j].ToString().Equals(reader.GetAttribute("ServerFolder" + number)))
+                                        {
+                                            checkedListBox4.SetItemCheckState(j, CheckState.Checked);
+                                            number++;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                     reader.Close();
-                    loadModPackFiles();
                 }
             }
             catch (Exception ex)
@@ -300,6 +386,63 @@ namespace Minecraft_Mod_Pack_Packager
                 writer.WriteAttributeString("ClientFiles", checkBoxClient.Checked.ToString());
                 writer.WriteAttributeString("ServerFiles", checkBoxServer.Checked.ToString());
 
+                int number = 0;
+                writer.WriteStartElement("UnTickedClientMods");
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    if (!checkedListBox1.GetItemChecked(i))
+                    {
+                        writer.WriteAttributeString("ClientMod" + number, checkedListBox1.Items[i].ToString());
+                        number++;
+                    }
+                }
+                writer.WriteAttributeString("NumOfClientMods", "" + number);
+                writer.WriteEndElement();
+
+                number = 0;
+                writer.WriteStartElement("UnTickedServerMods");
+                for (int i = 0; i < checkedListBox2.Items.Count; i++)
+                {
+                    if (!checkedListBox2.GetItemChecked(i))
+                    {
+                        writer.WriteAttributeString("ServerMod" + number, checkedListBox2.Items[i].ToString());
+                        number++;
+                    }
+                }
+                writer.WriteAttributeString("NumOfServerMods", "" + number);
+                writer.WriteEndElement();
+
+                number = 0;
+                writer.WriteStartElement("TickedClientFolders");
+                for (int i = 0; i < checkedListBox3.Items.Count; i++)
+                {
+                    if (checkedListBox3.GetItemChecked(i))
+                    {
+                        if (!checkedListBox3.Items[i].Equals("config") && !checkedListBox3.Items[i].Equals("mods"))
+                        {
+                            writer.WriteAttributeString("ClientFolder" + number, checkedListBox3.Items[i].ToString());
+                            number++;
+                        }
+                    }
+                }
+                writer.WriteAttributeString("NumOfClientFolders", "" + number);
+                writer.WriteEndElement();
+
+                number = 0;
+                writer.WriteStartElement("TickedServerFolders");
+                for (int i = 0; i < checkedListBox4.Items.Count; i++)
+                {
+                    if (checkedListBox4.GetItemChecked(i))
+                    {
+                        if (!checkedListBox4.Items[i].Equals("config") && !checkedListBox4.Items[i].Equals("mods"))
+                        {
+                            writer.WriteAttributeString("ServerFolder" + number, checkedListBox4.Items[i].ToString());
+                            number++;
+                        }
+                    }
+                }
+                writer.WriteAttributeString("NumOfServerFolders", "" + number);
+                writer.WriteEndElement();
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
                 writer.Flush();

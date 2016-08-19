@@ -63,6 +63,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSaveTemplate = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -423,7 +424,7 @@
             this.MinimumSize = new System.Drawing.Size(975, 570);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Minecraft Mod Pack Packager v1.0.0 - By MJRLegends";
+            this.Text = "Minecraft Mod Pack Packager v2.5.0 - By MJRLegends";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -475,6 +476,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnSaveTemplate;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
