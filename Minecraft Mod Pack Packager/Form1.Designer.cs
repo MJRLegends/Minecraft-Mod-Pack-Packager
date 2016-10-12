@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtModPackPath = new System.Windows.Forms.TextBox();
             this.btnModPackPath = new System.Windows.Forms.Button();
             this.lblModPackPath = new System.Windows.Forms.Label();
@@ -419,6 +420,7 @@
             this.Controls.Add(this.btnLoadTemplate);
             this.Controls.Add(this.btnCreateFiles);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(975, 570);
             this.MinimumSize = new System.Drawing.Size(975, 570);
