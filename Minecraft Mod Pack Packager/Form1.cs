@@ -36,10 +36,10 @@ namespace Minecraft_Mod_Pack_Packager
         {
             modpackPath = txtModPackPath.Text;
             serverfilesPath = txtModPackExtraFiles.Text;
-            checkedListBox1.Items.Clear();
-            checkedListBox2.Items.Clear();
-            checkedListBox3.Items.Clear();
-            checkedListBox4.Items.Clear();
+            listModsClient.Items.Clear();
+            listModsServer.Items.Clear();
+            listFoldersClient.Items.Clear();
+            listFoldersServer.Items.Clear();
             if (Directory.Exists(modpackPath + @"\config\") && Directory.Exists(modpackPath + @"\mods\"))
             {
 
@@ -48,8 +48,8 @@ namespace Minecraft_Mod_Pack_Packager
 
                 foreach (var file in d.GetFiles("*.jar"))
                 {
-                    checkedListBox1.Items.Add(file.Name, true);
-                    checkedListBox2.Items.Add(file.Name, true);
+                    listModsClient.Items.Add(file.Name, true);
+                    listModsServer.Items.Add(file.Name, true);
                 }
                 bool itemChecked = false;
                 string[] dirs = Directory.GetDirectories(@modpackPath);
@@ -60,8 +60,8 @@ namespace Minecraft_Mod_Pack_Packager
                         itemChecked = true;
                     else
                         itemChecked = false;
-                    checkedListBox3.Items.Add(f.Name, itemChecked);
-                    checkedListBox4.Items.Add(f.Name, itemChecked);
+                    listFoldersClient.Items.Add(f.Name, itemChecked);
+                    listFoldersServer.Items.Add(f.Name, itemChecked);
                 }
             }
             else
@@ -94,18 +94,18 @@ namespace Minecraft_Mod_Pack_Packager
                 txtConsole.AppendText("Writing: " + e.CurrentEntry.FileName + " (" + (e.EntriesSaved + 1) + "/" + e.EntriesTotal + ")"+ "\n");
                 txtConsole.AppendText("Filename:" + e.CurrentEntry.FileName + "\n");
 
-                progressBar2.Maximum = e.EntriesTotal;
-                progressBar2.Value = e.EntriesSaved + 1;
+                progressBarSub.Maximum = e.EntriesTotal;
+                progressBarSub.Value = e.EntriesSaved + 1;
             }
             else if (e.EventType == ZipProgressEventType.Saving_EntryBytesRead)
             {
-                progressBar1.Value = (int)((e.BytesTransferred * 100) / e.TotalBytesToTransfer);
+                progressBarMain.Value = (int)((e.BytesTransferred * 100) / e.TotalBytesToTransfer);
             }
             else if (e.EventType == ZipProgressEventType.Saving_Completed)
             {
                 txtConsole.AppendText("Done!" + "\n");
-                progressBar1.Value = 0;
-                progressBar2.Value = 0;
+                progressBarMain.Value = 0;
+                progressBarSub.Value = 0;
             }
         }
 
@@ -150,7 +150,7 @@ namespace Minecraft_Mod_Pack_Packager
 
                         foreach (var file in d.GetFiles("*.jar"))
                         {
-                            if (checkedListBox1.CheckedItems.Contains(file.Name))
+                            if (listModsClient.CheckedItems.Contains(file.Name))
                                 zip.AddFile(@modpackPath + @"\mods\" + file.Name, @"minecraft\mods");
                         }
 
@@ -162,10 +162,10 @@ namespace Minecraft_Mod_Pack_Packager
                         }
                     }
 
-                    for (int i = 0; i < checkedListBox3.Items.Count; i++)
+                    for (int i = 0; i < listFoldersClient.Items.Count; i++)
                     {
-                        String folder = checkedListBox3.GetItemText(checkedListBox3.Items[i]);
-                        if (checkedListBox3.CheckedItems.Contains(folder))
+                        String folder = listFoldersClient.GetItemText(listFoldersClient.Items[i]);
+                        if (listFoldersClient.CheckedItems.Contains(folder))
                         {
                             if (!folder.ToLower().Equals("config") && !folder.ToLower().Equals("mods"))
                             {
@@ -210,7 +210,7 @@ namespace Minecraft_Mod_Pack_Packager
 
                         foreach (var file in d.GetFiles("*.jar"))
                         {
-                            if (checkedListBox2.CheckedItems.Contains(file.Name))
+                            if (listModsServer.CheckedItems.Contains(file.Name))
                                 zip.AddFile(@modpackPath + @"\mods\" + file.Name, @"\" + serverFolderName + @"\mods");
                         }
 
@@ -221,10 +221,10 @@ namespace Minecraft_Mod_Pack_Packager
                             zip.AddDirectory(@modpackPath + @"\mods\" + f.Name + @"\", @"\" + serverFolderName + @"\mods\" + f.Name);
                         }
                     }
-                    for (int i = 0; i < checkedListBox4.Items.Count; i++)
+                    for (int i = 0; i < listFoldersServer.Items.Count; i++)
                     {
-                        String folderServer = checkedListBox4.GetItemText(checkedListBox4.Items[i]);
-                        if (checkedListBox4.CheckedItems.Contains(folderServer))
+                        String folderServer = listFoldersServer.GetItemText(listFoldersServer.Items[i]);
+                        if (listFoldersServer.CheckedItems.Contains(folderServer))
                         {
                             if (!folderServer.ToLower().Equals("config") && !folderServer.ToLower().Equals("mods"))
                             {
@@ -294,11 +294,11 @@ namespace Minecraft_Mod_Pack_Packager
                                 int number = 0;
                                 for (int i = 0; i < Convert.ToInt32(reader.GetAttribute("NumOfClientMods")); i++)
                                 {
-                                    for (int j = 0; j < checkedListBox1.Items.Count; j++)
+                                    for (int j = 0; j < listModsClient.Items.Count; j++)
                                     {
-                                        if (checkedListBox1.CheckedItems.Contains(reader.GetAttribute("ClientMod" + number)) && checkedListBox1.Items[j].ToString().Equals(reader.GetAttribute("ClientMod" + number)))
+                                        if (listModsClient.CheckedItems.Contains(reader.GetAttribute("ClientMod" + number)) && listModsClient.Items[j].ToString().Equals(reader.GetAttribute("ClientMod" + number)))
                                         {
-                                            checkedListBox1.SetItemCheckState(j, CheckState.Unchecked);
+                                            listModsClient.SetItemCheckState(j, CheckState.Unchecked);
                                             number++;
                                         }
                                     }
@@ -310,11 +310,11 @@ namespace Minecraft_Mod_Pack_Packager
                                 int amount = Convert.ToInt32(reader.GetAttribute("NumOfServerMods"));
                                 for (int i = 0; i < amount; i++)
                                 {
-                                    for (int j = 0; j < checkedListBox2.Items.Count; j++)
+                                    for (int j = 0; j < listModsServer.Items.Count; j++)
                                     {
-                                        if (checkedListBox2.CheckedItems.Contains(reader.GetAttribute("ServerMod" + number)) && checkedListBox2.Items[j].ToString().Equals(reader.GetAttribute("ServerMod" + number)))
+                                        if (listModsServer.CheckedItems.Contains(reader.GetAttribute("ServerMod" + number)) && listModsServer.Items[j].ToString().Equals(reader.GetAttribute("ServerMod" + number)))
                                         {
-                                            checkedListBox2.SetItemCheckState(j, CheckState.Unchecked);
+                                            listModsServer.SetItemCheckState(j, CheckState.Unchecked);
                                             number++;
                                         }
                                             
@@ -326,11 +326,11 @@ namespace Minecraft_Mod_Pack_Packager
                                 int number = 0;
                                 for (int i = 0; i < Convert.ToInt32(reader.GetAttribute("NumOfClientFolders")); i++)
                                 {
-                                    for (int j = 0; j < checkedListBox3.Items.Count; j++)
+                                    for (int j = 0; j < listFoldersClient.Items.Count; j++)
                                     {
-                                        if (!checkedListBox3.CheckedItems.Contains(reader.GetAttribute("ClientFolder" + number)) && checkedListBox3.Items[j].ToString().Equals(reader.GetAttribute("ClientFolder" + number)))
+                                        if (!listFoldersClient.CheckedItems.Contains(reader.GetAttribute("ClientFolder" + number)) && listFoldersClient.Items[j].ToString().Equals(reader.GetAttribute("ClientFolder" + number)))
                                         {
-                                            checkedListBox3.SetItemCheckState(j, CheckState.Checked);
+                                            listFoldersClient.SetItemCheckState(j, CheckState.Checked);
                                             number++;
                                         }
                                     }
@@ -341,11 +341,11 @@ namespace Minecraft_Mod_Pack_Packager
                                 int number = 0;
                                 for (int i = 0; i < Convert.ToInt32(reader.GetAttribute("NumOfServerFolders")); i++)
                                 {
-                                    for (int j = 0; j < checkedListBox4.Items.Count; j++)
+                                    for (int j = 0; j < listFoldersServer.Items.Count; j++)
                                     {
-                                        if (!checkedListBox4.CheckedItems.Contains(reader.GetAttribute("ServerFolder" + number)) && checkedListBox4.Items[j].ToString().Equals(reader.GetAttribute("ServerFolder" + number)))
+                                        if (!listFoldersServer.CheckedItems.Contains(reader.GetAttribute("ServerFolder" + number)) && listFoldersServer.Items[j].ToString().Equals(reader.GetAttribute("ServerFolder" + number)))
                                         {
-                                            checkedListBox4.SetItemCheckState(j, CheckState.Checked);
+                                            listFoldersServer.SetItemCheckState(j, CheckState.Checked);
                                             number++;
                                         }
                                     }
@@ -388,11 +388,11 @@ namespace Minecraft_Mod_Pack_Packager
 
                 int number = 0;
                 writer.WriteStartElement("UnTickedClientMods");
-                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                for (int i = 0; i < listModsClient.Items.Count; i++)
                 {
-                    if (!checkedListBox1.GetItemChecked(i))
+                    if (!listModsClient.GetItemChecked(i))
                     {
-                        writer.WriteAttributeString("ClientMod" + number, checkedListBox1.Items[i].ToString());
+                        writer.WriteAttributeString("ClientMod" + number, listModsClient.Items[i].ToString());
                         number++;
                     }
                 }
@@ -401,11 +401,11 @@ namespace Minecraft_Mod_Pack_Packager
 
                 number = 0;
                 writer.WriteStartElement("UnTickedServerMods");
-                for (int i = 0; i < checkedListBox2.Items.Count; i++)
+                for (int i = 0; i < listModsServer.Items.Count; i++)
                 {
-                    if (!checkedListBox2.GetItemChecked(i))
+                    if (!listModsServer.GetItemChecked(i))
                     {
-                        writer.WriteAttributeString("ServerMod" + number, checkedListBox2.Items[i].ToString());
+                        writer.WriteAttributeString("ServerMod" + number, listModsServer.Items[i].ToString());
                         number++;
                     }
                 }
@@ -414,13 +414,13 @@ namespace Minecraft_Mod_Pack_Packager
 
                 number = 0;
                 writer.WriteStartElement("TickedClientFolders");
-                for (int i = 0; i < checkedListBox3.Items.Count; i++)
+                for (int i = 0; i < listFoldersClient.Items.Count; i++)
                 {
-                    if (checkedListBox3.GetItemChecked(i))
+                    if (listFoldersClient.GetItemChecked(i))
                     {
-                        if (!checkedListBox3.Items[i].Equals("config") && !checkedListBox3.Items[i].Equals("mods"))
+                        if (!listFoldersClient.Items[i].Equals("config") && !listFoldersClient.Items[i].Equals("mods"))
                         {
-                            writer.WriteAttributeString("ClientFolder" + number, checkedListBox3.Items[i].ToString());
+                            writer.WriteAttributeString("ClientFolder" + number, listFoldersClient.Items[i].ToString());
                             number++;
                         }
                     }
@@ -430,13 +430,13 @@ namespace Minecraft_Mod_Pack_Packager
 
                 number = 0;
                 writer.WriteStartElement("TickedServerFolders");
-                for (int i = 0; i < checkedListBox4.Items.Count; i++)
+                for (int i = 0; i < listFoldersServer.Items.Count; i++)
                 {
-                    if (checkedListBox4.GetItemChecked(i))
+                    if (listFoldersServer.GetItemChecked(i))
                     {
-                        if (!checkedListBox4.Items[i].Equals("config") && !checkedListBox4.Items[i].Equals("mods"))
+                        if (!listFoldersServer.Items[i].Equals("config") && !listFoldersServer.Items[i].Equals("mods"))
                         {
-                            writer.WriteAttributeString("ServerFolder" + number, checkedListBox4.Items[i].ToString());
+                            writer.WriteAttributeString("ServerFolder" + number, listFoldersServer.Items[i].ToString());
                             number++;
                         }
                     }
@@ -456,10 +456,10 @@ namespace Minecraft_Mod_Pack_Packager
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            checkedListBox1.Items.Clear();
-            checkedListBox2.Items.Clear();
-            checkedListBox3.Items.Clear();
-            checkedListBox4.Items.Clear();
+            listModsClient.Items.Clear();
+            listModsServer.Items.Clear();
+            listFoldersClient.Items.Clear();
+            listFoldersServer.Items.Clear();
             txtModPackName.Text = "";
             txtModPackVersion.Text = "";
             txtModPackPath.Text = "";
